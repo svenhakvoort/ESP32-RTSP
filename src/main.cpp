@@ -6,14 +6,14 @@
 /** Camera class */
 OV2640 cam;
 
-/** GPIO for OTA request button */
-int otaButton = 12;
-/** Button class */
-OneButton pushBt(otaButton, true, true);
-
-/** Function declarations */
-void enableOTA(void);
-void resetDevice(void);
+///** GPIO for OTA request button */
+//int otaButton = 12;
+///** Button class */
+//OneButton pushBt(otaButton, true, true);
+//
+///** Function declarations */
+//void enableOTA(void);
+//void resetDevice(void);
 
 /** 
  * Called once after reboot/powerup
@@ -71,22 +71,22 @@ void setup()
 	initRTSP();
 #endif
 
-	// Attach the button functions
-	pushBt.attachClick(enableOTA);
-	pushBt.attachDoubleClick(resetDevice);
+//	// Attach the button functions
+//	pushBt.attachClick(enableOTA);
+//	pushBt.attachDoubleClick(resetDevice);
 }
 
 void loop()
 {
-	// Check the button
-	pushBt.tick();
-
-	if (otaStarted)
-	{
-		ArduinoOTA.handle();
-	}
+//	// Check the button
+//	pushBt.tick();
+//
+//	if (otaStarted)
+//	{
+//		ArduinoOTA.handle();
+//	}
 	//Nothing else to do here
-	delay(100);
+	delay(1);
 }
 
 /**
@@ -94,36 +94,36 @@ void loop()
  */
 void enableOTA(void)
 {
-	// If OTA is not enabled
-	if (!otaStarted)
-	{
-		// Stop the camera servers
-#ifdef ENABLE_WEBSERVER
-		stopWebStream();
-#endif
-#ifdef ENABLE_RTSPSERVER
-		stopRTSP();
-#endif
-		delay(100);
-		Serial.println("OTA enabled");
-		// Start the OTA server
-		startOTA();
-		otaStarted = true;
-	}
-	else
-	{
-		// If OTA was enabled
-		otaStarted = false;
-		// Stop the OTA server
-		stopOTA();
-		// Restart the camera servers
+//	// If OTA is not enabled
+//	if (!otaStarted)
+//	{
+//		// Stop the camera servers
+//#ifdef ENABLE_WEBSERVER
+//		stopWebStream();
+//#endif
+//#ifdef ENABLE_RTSPSERVER
+//		stopRTSP();
+//#endif
+//		delay(100);
+//		Serial.println("OTA enabled");
+//		// Start the OTA server
+//		startOTA();
+//		otaStarted = true;
+//	}
+//	else
+//	{
+//		// If OTA was enabled
+//		otaStarted = false;
+//		// Stop the OTA server
+//		stopOTA();
+//		// Restart the camera servers
 #ifdef ENABLE_WEBSERVER
 		initWebStream();
 #endif
 #ifdef ENABLE_RTSPSERVER
 		initRTSP();
 #endif
-	}
+//	}
 }
 
 /** 
