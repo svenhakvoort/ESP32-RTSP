@@ -13,20 +13,19 @@ TaskHandle_t webTaskHandler;
 boolean stopWeb = false;
 
 /** Web request function forward declarations */
-void handle_jpg_stream(void);
-void handle_jpg(void);
+void handle_jpg_stream();
+void handle_jpg();
 void handleNotFound();
 
 /**
  * Initialize the web stream server by starting the handler task
  */
-void initWebStream(void)
+void initWebStream()
 {
-#ifdef ENABLE_WEBSERVER
 	// Create the task for the web server
-	xTaskCreate(webTask, "WEB", 4096, NULL, 1, &webTaskHandler);
+	xTaskCreate(webTask, "WEB", 4096, nullptr, 1, &webTaskHandler);
 
-	if (webTaskHandler == NULL)
+	if (webTaskHandler == nullptr)
 	{
 		Serial.println("Create Webstream task failed");
 	}
@@ -34,16 +33,6 @@ void initWebStream(void)
 	{
 		Serial.println("Webstream task up and running");
 	}
-#endif
-}
-
-/**
- * Called to stop the web server task, needed for OTA
- * to avoid OTA timeout error
- */
-void stopWebStream(void)
-{
-	stopWeb = true;
 }
 
 /**
@@ -64,38 +53,35 @@ void webTask(void *pvParameters)
 	// Start the web server
 	server.begin();
 
-	while (1)
+	while (true)
 	{
-#ifdef ENABLE_WEBSERVER
 			// Check if the server has clients
 			server.handleClient();
-#endif
 		}
 		if (stopWeb)
 		{
 			// User requested web server stop
 			server.close();
 			// Delete this task
-			vTaskDelete(NULL);
+			vTaskDelete(nullptr);
 		}
 		delay(100);
 }
 
-#ifdef ENABLE_WEBSERVER
 /**
  * Handle web stream requests
  * Gives a first response to prepare the streaming
  * Then runs in a loop to update the web content
  * every time a new frame is available
  */
-void handle_jpg_stream(void)
+void handle_jpg_stream()
 {
 	WiFiClient thisClient = server.client();
 	String response = "HTTP/1.1 200 OK\r\n";
 	response += "Content-Type: multipart/x-mixed-replace; boundary=frame\r\n\r\n";
 	server.sendContent(response);
 
-	while (1)
+	while (true)
 	{
 		cam.run();
 		if (!thisClient.connected())
@@ -108,7 +94,7 @@ void handle_jpg_stream(void)
 
 		thisClient.write((char *)cam.getfb(), cam.getSize());
 		server.sendContent("\r\n");
-		delay(150);
+		delay(100);
 	}
 }
 
@@ -117,7 +103,7 @@ void handle_jpg_stream(void)
  * Gets the latest picture from the camera
  * and sends it to the web client
  */
-void handle_jpg(void)
+void handle_jpg()
 {
 	WiFiClient thisClient = server.client();
 
@@ -151,4 +137,3 @@ void handleNotFound()
 	message += "\n";
 	server.send(200, "text/plain", message);
 }
-#endif
