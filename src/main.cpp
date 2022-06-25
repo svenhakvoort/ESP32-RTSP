@@ -14,6 +14,10 @@ void setup()
 	// Start the serial connection
 	Serial.begin(57600);
 
+    IPAddress local_IP(192, 168, 188, 111);
+    IPAddress gateway(192, 168, 188, 1);
+    IPAddress subnet(255, 255, 255, 0);
+
 	Serial.println("\n\n##################################");
 	Serial.printf("Internal Total heap %d, internal Free Heap %d\n", ESP.getHeapSize(), ESP.getFreeHeap());
 	Serial.printf("SPIRam Total heap %d, SPIRam Free Heap %d\n", ESP.getPsramSize(), ESP.getFreePsram());
@@ -28,6 +32,11 @@ void setup()
 
 	// Connect the WiFi
 	WiFiClass::mode(WIFI_STA);
+
+    if (!WiFi.config(local_IP, gateway, subnet)) {
+        Serial.println("STA Failed to configure");
+    }
+
 	WiFi.begin(ssid, password);
 	while (WiFiClass::status() != WL_CONNECTED)
 	{
