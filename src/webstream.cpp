@@ -94,7 +94,7 @@ void handle_jpg_stream()
 
 		thisClient.write((char *)cam.getfb(), cam.getSize());
 		server.sendContent("\r\n");
-		delay(100);
+		delay(25);
 	}
 }
 
