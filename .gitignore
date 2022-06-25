@@ -5,3 +5,5 @@
 .vscode/ipch
 cmake-build-debug
 cmake-build-esp32cam
+.idea
+*.iml

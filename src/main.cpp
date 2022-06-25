@@ -12,7 +12,7 @@ cameraModule cam;
 void setup()
 {
 	// Start the serial connection
-	Serial.begin(115200);
+	Serial.begin(57600);
 
 	Serial.println("\n\n##################################");
 	Serial.printf("Internal Total heap %d, internal Free Heap %d\n", ESP.getHeapSize(), ESP.getFreeHeap());
