@@ -27,7 +27,7 @@ camera_config_t esp32cam_aithinker_config {
     .ledc_timer = LEDC_TIMER_1,
     .ledc_channel = LEDC_CHANNEL_1,
     .pixel_format = PIXFORMAT_JPEG,
-    .frame_size = FRAMESIZE_SVGA,
+    .frame_size = FRAMESIZE_HD,
     .jpeg_quality = 12,               //0-63 lower numbers are higher quality
     .fb_count = 2 // if more than one i2s runs in continous mode.  Use only with jpeg
 };
